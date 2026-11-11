@@ -1,9 +1,7 @@
 {"name":"Build APK","on":{"push":{},"workflow_dispatch":{}},"jobs":{"build":{"runs-on":"ubuntu-latest","steps":[
 {"uses":"actions/checkout@v4"},
-{"run":"unzip -q *.zip -d src"},
-{"uses":"actions/setup-java@v4","with":{"distribution":"temurin","java-version":"17"}},
-{"uses":"android-actions/setup-android@v3"},
-{"uses":"gradle/actions/setup-gradle@v4","with":{"gradle-version":"8.7"}},
-{"run":"gradle assembleDebug --no-daemon","working-directory":"src"},
+{"name":"Unzip project","run":"unzip -q *.zip -d src"},
+{"name":"Get Gradle","run":"wget -q https://services.gradle.org/distributions/gradle-8.7-bin.zip && unzip -q gradle-8.7-bin.zip"},
+{"name":"Build","run":"export JAVA_HOME=$JAVA_HOME_17_X64 && cd src && ../gradle-8.7/bin/gradle assembleDebug --no-daemon"},
 {"uses":"actions/upload-artifact@v4","with":{"name":"citation-guide-apk","path":"src/app/build/outputs/apk/debug/app-debug.apk"}}
 ]}}}
